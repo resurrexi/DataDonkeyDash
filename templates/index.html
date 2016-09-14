@@ -1,0 +1,46 @@
+{%- extends "layout.html" -%}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content -%}
+	<div class="jumbotron feature-div">
+		<div class="container">
+			<h1>Data Donkey Dashboards</h1>
+			<p>We provide cool looking dashboards for your business, and they can be rendered in real-time too! Check out our dashboards using the navigation bar above.</p>
+		</div>
+	</div>
+	<main role="main">
+		<div class="feature-div">
+			<div class="container">
+				<h2>When donkeys meet data</h2>
+				<p class="lead">You don't need a rocket scientist to make charts and graphs. You need a rocket scientist to make rockets. So when it comes to charts and graphs, all you need is the data and donkeys. We are naturally hard workers... so don't take out the whip please...</p>
+				<hr class="half-rule">
+				<div class="row row-content">
+					<div class="col-xs-6 col-sm-3">
+						<img src="{{ url_for('static', filename='img/flask.png') }}" alt="flask" class="img-responsive">
+						<h3>MVC goodness</h3>
+						<p><a href="http://flask.pocoo.org/">Flask</a> is our bridge that closes the gap between our backend and our frontend. While lightweight and minimal as a web framework, it provides the tools and packages necessary to quickly prototype our apps.</p>
+					</div>
+					<div class="col-xs-6 col-sm-3">
+						<img src="{{ url_for('static', filename='img/bootstrap.png') }}" alt="bootstrap" class="img-responsive">
+						<h3>Elegant design</h3>
+						<p>When it comes to beautiful and responsive visuals, <a href="http://getbootstrap.com/">Bootstrap</a> comes to the rescue. Following the grid based design philosophy, Bootstrap helps provide rapid deployment of our visual layouts with its existing styles and preconfigured CSS classes.</p>
+					</div>
+					<div class="col-xs-6 col-sm-3">
+						<img src="{{ url_for('static', filename='img/highcharts.png') }}" alt="highcharts" class="img-responsive">
+						<h3>Dashboard glory</h3>
+						<p>When it comes to interactive charts, graphs, and even maps, <a href="http://www.highcharts.com/">Highcharts</a> provides the power to do just that! Combined with Bootstrap's layout components, our dashboards can't look any better!</p>
+					</div>
+					<div class="col-xs-6 col-sm-3">
+						<img src="{{ url_for('static', filename='img/python.png') }}" alt="python" class="img-responsive">
+						<h3>Backend versatility</h3>
+						<p>We can't forget our language that does all the data manipulation and analysis in the backend. However, <a href="https://www.python.org/">Python</a> is capable of doing much more. It comes with many packages for doing many other tasks such as <a href="{{ url_for('geocode') }}">geocoding</a> and running a <a href="{{ url_for('outreach') }}">SMS/Voice service</a>.</p>
+					</div>
+				</div>
+				<hr class="half-rule">
+				<p class="lead">Data Donkey Dashboards is built with open source tools, so it's naturally open source. Come and contribute to the project!</p>
+				<a href="https://github.com" class="btn btn-default btn-lg">View the project</a>
+			</div>
+		</div>
+	</main>
+{%- endblock %}

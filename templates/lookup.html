@@ -1,0 +1,30 @@
+{%- extends "layout.html" -%}
+
+{% block content -%}
+    <main role="main">
+        <div class="container">
+            <div class="col-sm-12">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                {% for row in result.columns.values.tolist() %}
+                                    <th>{{ row }}</th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in result.itertuples(False) %}
+                                <tr>
+                                    {% for item in row %}
+                                        <td>{{ item }}</td>
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+{%- endblock %}

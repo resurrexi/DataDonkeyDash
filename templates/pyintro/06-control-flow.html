@@ -1,0 +1,551 @@
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Control-Flow">Control Flow<a class="anchor-link" href="#Control-Flow">&#182;</a></h1><p>Python uses various control flow mechanisms, similar to other programming languages. These control flow mechanisms direct which parts of the program code is executed. The following are control flow tools used in Python:</p>
+<ul>
+<li>Branches<ul>
+<li><code>if</code>, <code>elif</code>, <code>else</code></li>
+<li><code>try</code>, <code>except</code>, <code>finally</code></li>
+</ul>
+</li>
+<li>Loops<ul>
+<li><code>for</code></li>
+<li><code>while</code></li>
+<li>Loop flow statements<ul>
+<li><code>break</code></li>
+<li><code>continue</code></li>
+<li><code>else</code></li>
+<li><code>pass</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Functions</li>
+</ul>
+<p>We will go over the conditional <code>if</code> statement, and loops for now; <code>try</code>, <code>except</code>, and <code>finally</code> will be covered later because they are used for error handling; functions will be covered in the next section.</p>
+<hr>
+<h2 id="Conditional-if-statement">Conditional <code>if</code> statement<a class="anchor-link" href="#Conditional-if-statement">&#182;</a></h2><p>The <code>if</code> statement is used for evaluating expressions. The <code>if</code> block usually follows the form of:</p>
+<div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">expression01</span><span class="p">:</span>
+    <span class="c1"># code to execute when expression01 is True</span>
+<span class="k">elif</span> <span class="n">expression02</span><span class="p">:</span>
+    <span class="c1"># code to execute when expression02 is True</span>
+<span class="k">elif</span> <span class="n">expression03</span><span class="p">:</span>
+    <span class="c1"># code to execute when expression03 is True</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="c1"># code to execute when all the above expressions are False</span>
+</pre></div>
+<p>Take note that the order in which the expressions appear in the code block can affect the result of the output. This order is similar to the order in which <code>case when</code> statements in SQL are executed.</p>
+<p>Let's consider the following dataset containing famous cats and their age:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;Name&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Vladimeow Purrtin&#39;</span><span class="p">,</span> <span class="s1">&#39;Barack Oclawma&#39;</span><span class="p">,</span> <span class="s1">&#39;Tayroar Swift&#39;</span><span class="p">,</span> <span class="s1">&#39;Meowbert Einstein&#39;</span><span class="p">,</span> <span class="s1">&#39;Hairy Pawtter&#39;</span><span class="p">],</span>
+                   <span class="s1">&#39;Age&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">33</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">126</span><span class="p">,</span> <span class="mi">15</span><span class="p">]})</span>
+<span class="n">df</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[3]:</div>
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Age</th>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>33</td>
+      <td>Vladimeow Purrtin</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>42</td>
+      <td>Barack Oclawma</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>25</td>
+      <td>Tayroar Swift</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>126</td>
+      <td>Meowbert Einstein</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>15</td>
+      <td>Hairy Pawtter</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We want to create age buckets for these people:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Let&#39;s create a function to do the bucketing, which we will then apply to the dataset</span>
+<span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;Young cat&#39;</span>
+    <span class="k">elif</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="mi">25</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;Grown cat&#39;</span>
+    <span class="k">elif</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="mi">35</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;Working cat&#39;</span>
+    <span class="k">elif</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="mi">45</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;CEO cat&#39;</span>
+    <span class="k">elif</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="mi">55</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;Retiring cat&#39;</span>
+    <span class="k">elif</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="mi">65</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;Old cat&#39;</span>
+    <span class="k">elif</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;Dead cat&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;Quantum cat&#39;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Age Bucket&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Age&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">forward</span><span class="p">)</span>
+<span class="n">df</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[5]:</div>
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Age</th>
+      <th>Name</th>
+      <th>Age Bucket</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>33</td>
+      <td>Vladimeow Purrtin</td>
+      <td>Young cat</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>42</td>
+      <td>Barack Oclawma</td>
+      <td>Young cat</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>25</td>
+      <td>Tayroar Swift</td>
+      <td>Young cat</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>126</td>
+      <td>Meowbert Einstein</td>
+      <td>Young cat</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>15</td>
+      <td>Hairy Pawtter</td>
+      <td>Young cat</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Notice how every single cat is labeled a <code>Young cat</code>? That's because all their ages were above 0, so only the <code>if</code> component of the code block was executed, and all the <code>elif</code> and <code>else</code> statements were skipped. This would be the correct implementation:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">def</span> <span class="nf">backwards</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;Dead cat&#39;</span>
+    <span class="k">elif</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="mi">65</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;Old cat&#39;</span>
+    <span class="k">elif</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="mi">55</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;Retiring cat&#39;</span>
+    <span class="k">elif</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="mi">45</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;CEO cat&#39;</span>
+    <span class="k">elif</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="mi">35</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;Working cat&#39;</span>
+    <span class="k">elif</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="mi">25</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;Grown cat&#39;</span>
+    <span class="k">elif</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;Young cat&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;Quantum cat&#39;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Age Bucket&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Age&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">backwards</span><span class="p">)</span>
+<span class="n">df</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[7]:</div>
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Age</th>
+      <th>Name</th>
+      <th>Age Bucket</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>33</td>
+      <td>Vladimeow Purrtin</td>
+      <td>Grown cat</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>42</td>
+      <td>Barack Oclawma</td>
+      <td>Working cat</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>25</td>
+      <td>Tayroar Swift</td>
+      <td>Grown cat</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>126</td>
+      <td>Meowbert Einstein</td>
+      <td>Dead cat</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>15</td>
+      <td>Hairy Pawtter</td>
+      <td>Young cat</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Sometimes you may see an expression evaluated as just a variable by itself:</p>
+<div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">x</span><span class="p">:</span>
+</pre></div>
+<p>Python evaluates this in a boolean context, so any value is taken as either <code>True</code> or <code>False</code>. Therefore, any non-zero number and non-empty string, list, tuple, or dictionary evaluates to <code>True</code>; and zero numbers, <code>None</code>, and empty sequences and dictionaries evaluate to <code>False</code>.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<hr>
+<h2 id="for-loop"><code>for</code> loop<a class="anchor-link" href="#for-loop">&#182;</a></h2><p>The <code>for</code> loop is a very common loop statement for repetitive execution of code blocks, where the repetitions are controlled by an iterable object. An iterable object in most cases will be a sequence such as a list or tuple. Strings can also be treated as an iterable object, where their characters would be treated as the iterable elements. The syntax structure of the <code>for</code> loop is:</p>
+<div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">iterable</span><span class="p">:</span>
+    <span class="c1"># code to run during each iteration</span>
+</pre></div>
+<p>Note the <code>in</code> keyword used in the syntax. This is different from the <code>in</code> operator used for doing boolean evaluations of element existence in sequences or strings.</p>
+<p>The <em>element</em> is the individual element within the <em>iterable</em> object that gets incremented during each pass of the loop sequence. The <code>for</code> loop will continue to execute the code within its code block until the <em>iterable</em> becomes exhausted. In a special case of dictionaries, <code>for</code> loops can retrieve multiple elements</p>
+<p><code>For</code> loops can also retrieve element groups, where each element group can have multiple elements and these multiple elements can have their own variable assignment. In this special case, these element groups would be tuples because Python supports a feature known as <a href="https://python-programming.courses/general/tuple-unpacking/">tuple unpacking</a>. The most common scenario where this implementation is seen is in dictionaries:</p>
+<div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">dictionary</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="c1"># do some stuff here...</span>
+</pre></div>
+<p><em>key</em> is the variable that gets assigned with the key. <em>value</em> is the variable that gets assigned with the value. The dictionary uses the <code>items()</code> method to generate an iterable of key-value pairs where the key-value pairs are wrapped in a tuple. Consider this working example:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">dictionary</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Name&#39;</span><span class="p">:</span> <span class="s1">&#39;Purrsephone&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;Occupation&#39;</span><span class="p">:</span> <span class="s1">&#39;Greek Goddess&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;Age&#39;</span><span class="p">:</span> <span class="mi">9999</span><span class="p">}</span>
+
+<span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">dictionary</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">print</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Age 9999
+Name Purrsephone
+Occupation Greek Goddess
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">print</span> <span class="n">dictionary</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[(&apos;Age&apos;, 9999), (&apos;Name&apos;, &apos;Purrsephone&apos;), (&apos;Occupation&apos;, &apos;Greek Goddess&apos;)]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Notice that when I ask Python to print out the contents of <code>dictionary.items()</code>, it returns a list (an iterable object) of key-value pairs where the pairs are wrapped in a tuple.</p>
+<h3 id="range-and-xrange"><code>range</code> and <code>xrange</code><a class="anchor-link" href="#range-and-xrange">&#182;</a></h3><p>Python comes with 2 in-built functions <code>range</code> and <code>xrange</code> for generating iterables of integers. These are commonly used functions when an existing iterable object isn't found or necessary.</p>
+<div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="c1"># some code to execute here</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="c1"># some code to execute here</span>
+</pre></div>
+<p>Both of these functions will generate an iterable of integers where the first integer starts at <em>0</em> and increments up to <em>x</em>, but not including <em>x</em>. For a simplistic interpretation, these functions will generate up to <em>x</em> integers where the first integer is a <em>0</em>.</p>
+<p>Now you may be wondering what the difference between the two functions are. <code>range</code> returns an entire list of the integers at once, while <code>xrange</code> returns one integer at a time. The differences between these two implementations become apparent when the value of <em>x</em> increases. The reason is that since <code>range</code> generates the entire list at once, it begins to utilize a lot of system memory when the generated list becomes large, whereas the <code>xrange</code> function outputs one integer at a time, resulting in less memory consumption. <code>xrange</code> is also a special case of functions where it doesn't <code>return</code> a value, but instead <code>yield</code>s a value. This function is known in a broad sense as a <a href="http://intermediatepythonista.com/python-generators">generator function</a>.</p>
+<p><strong>Note:</strong> The <code>xrange</code> function has been renamed to <code>range</code> in Python 3.x. Therefore, if you are using Python 3.x, just use <code>range</code> and it will behave just like <code>xrange</code> in Python 2.x.</p>
+<h3 id="List-comprehensions">List comprehensions<a class="anchor-link" href="#List-comprehensions">&#182;</a></h3><p>A common usage of a <code>for</code> loop is to inspect each element in an iterable, process the inspected elements, and generate a new list where the elements are the post-processed elements. This concept is called <a href="https://docs.python.org/2/tutorial/datastructures.html#list-comprehensions">list comprehension</a>. Consider the example below:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">addone</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+    <span class="n">addone</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="n">addone</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Ok, so the code above utilized a <code>for</code> loop that iterated through a generated sequence of 10 integers using the <code>range</code> function (remember the <code>range</code> function generates integers from 0), and then added 1 to each of the integers, where the results of the add operation are appended to the <em>addone</em> list.</p>
+<p>In list comprehensions however, a one-line expression can be written that can do the same thing:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">addone</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
+<span class="k">print</span> <span class="n">addone</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<hr>
+<h2 id="while-loop"><code>while</code> loop<a class="anchor-link" href="#while-loop">&#182;</a></h2><p>Similar to a <code>for</code> loop, the <code>while</code> loop repeats execution of code, where the cycles are controlled by a conditional expression.</p>
+<div class="highlight"><pre><span></span><span class="k">while</span> <span class="n">conditional</span><span class="p">:</span>
+    <span class="c1"># some code to be executed</span>
+</pre></div>
+<p>Firstly, the <em>conditional</em> is evaluated and if it's <code>False</code>, the loop terminates. If the condition is <code>True</code>, then the code in the loop body is executed. When the loop body finishes executing, the condition is evaluated again to see if the loop body should be executed again. The cycle continues until the <em>conditional</em> evaluates to <code>False</code>. The code in the loop body should always have something that eventually makes the <em>conditional</em> evaluate to <code>False</code>. Otherwise, the loop will never end.</p>
+<hr>
+<h2 id="break,-continue,-else,-and-pass"><code>break</code>, <code>continue</code>, <code>else</code>, and <code>pass</code><a class="anchor-link" href="#break,-continue,-else,-and-pass">&#182;</a></h2><p>The <code>for</code> and <code>while</code> loops support a few other keywords that control the flow of the loop.</p>
+<ul>
+<li><code>break</code> prematurely terminates the loop. If the loop is nested in other loops, the <code>break</code> statement terminates the innermost nested loop.</li>
+<li><code>continue</code> terminates the current iteration of the loop, and moves the loop pointer back to the next iteration.</li>
+<li><code>else</code> is an optional statement that executes when the loop terminates naturally (at the end of the <code>for</code> iterator or when the <code>while</code> conditional evaluates to <code>False</code>).</li>
+<li><code>pass</code> is simply a placeholder that does nothing in the loop body. Because loop bodies require a statement, <code>pass</code> is usually used as the filler for doing... nothing.</li>
+</ul>
+<hr>
+<h2 id="Resources">Resources<a class="anchor-link" href="#Resources">&#182;</a></h2><ul>
+<li><a href="https://www.safaribooksonline.com/library/view/python-in-a/0596001886/ch04s09.html">Control Flow Statements</a></li>
+<li><a href="http://treyhunner.com/2015/12/python-list-comprehensions-now-in-color/">List Comprehensions</a></li>
+<li><a href="http://www.tutorialspoint.com/python/python_loop_control.htm">Python Loop Control</a></li>
+</ul>
+
+</div>
+</div>
+</div>

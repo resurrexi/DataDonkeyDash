@@ -1,0 +1,97 @@
+Program,LOB,Identified,Engaged
+BYFB,ASO,1051,733
+Care Consulting,ASO,241,188
+Complex CM,ASO,17,10
+Core Chronic,ASO,127,68
+General CM,ASO,1271,627
+HRMP,ASO,130,63
+Healthy Addition,ASO,1227,331
+NICU,ASO,7,5
+Oncology,ASO,186,131
+Pediatrics,ASO,94,25
+Rare Conditions,ASO,185,61
+Retail Health,ASO,258,234
+Transitions,ASO,32,16
+Transplant,ASO,16,11
+BYFB,FEP,4,2
+Care Consulting,FEP,3,2
+Complex CM,FEP,31,20
+Core Chronic,FEP,2,2
+General CM,FEP,2066,1549
+Healthy Addition,FEP,106,0
+Oncology,FEP,1,1
+Rare Conditions,FEP,1,0
+Retail Health,FEP,95,92
+Transitions,FEP,465,335
+Advanced Illness,FULLY_INS,1,0
+BYFB,FULLY_INS,526,341
+Care Consulting,FULLY_INS,113,58
+Complex CM,FULLY_INS,10,4
+Core Chronic,FULLY_INS,135,55
+General CM,FULLY_INS,979,396
+HRMP,FULLY_INS,31,18
+Healthy Addition,FULLY_INS,1142,209
+Oncology,FULLY_INS,70,43
+Pediatrics,FULLY_INS,46,14
+Rare Conditions,FULLY_INS,86,17
+Retail Health,FULLY_INS,736,675
+Transitions,FULLY_INS,143,95
+Transplant,FULLY_INS,4,1
+Care Consulting,MBI,24,13
+Complex CM,MBI,3,1
+Core Chronic,MBI,111,70
+General CM,MBI,512,290
+HRMP,MBI,1,1
+Health Dialog,MBI,,192
+Healthy Addition,MBI,126,71
+Oncology,MBI,5,4
+Pediatrics,MBI,2,1
+Rare Conditions,MBI,1,1
+Retail Health,MBI,223,202
+Transitions,MBI,345,217
+Transplant,MBI,1,1
+Advanced Illness,MED_ADV,4,2
+BYFB,MED_ADV,2,1
+Care Consulting,MED_ADV,294,183
+Complex CM,MED_ADV,19,4
+Core Chronic,MED_ADV,1865,557
+General CM,MED_ADV,4212,1076
+Healthy Addition,MED_ADV,3,0
+Oncology,MED_ADV,23,18
+Rare Conditions,MED_ADV,34,12
+Retail Health,MED_ADV,594,506
+Transitions,MED_ADV,1211,909
+Transplant,MED_ADV,1,1
+Care Consulting,MED_SUPP,1,1
+Core Chronic,MED_SUPP,3,2
+General CM,MED_SUPP,27,6
+Retail Health,MED_SUPP,123,118
+Transitions,MED_SUPP,2,2
+BYFB,OffExchange,1,0
+Care Consulting,OffExchange,27,20
+Complex CM,OffExchange,5,3
+Core Chronic,OffExchange,142,84
+General CM,OffExchange,605,301
+HRMP,OffExchange,9,3
+Health Dialog,OffExchange,,120
+Healthy Addition,OffExchange,224,18
+Oncology,OffExchange,27,12
+Pediatrics,OffExchange,19,9
+Rare Conditions,OffExchange,16,7
+Retail Health,OffExchange,170,154
+Transitions,OffExchange,360,216
+Transplant,OffExchange,1,1
+BYFB,OnExchange,7,4
+Care Consulting,OnExchange,138,96
+Complex CM,OnExchange,26,15
+Core Chronic,OnExchange,896,561
+General CM,OnExchange,2514,1326
+HRMP,OnExchange,5,2
+Health Dialog,OnExchange,,1086
+Healthy Addition,OnExchange,337,33
+Oncology,OnExchange,112,57
+Pediatrics,OnExchange,9,2
+Rare Conditions,OnExchange,51,17
+Retail Health,OnExchange,804,749
+Transitions,OnExchange,2103,1335
+Transplant,OnExchange,3,0

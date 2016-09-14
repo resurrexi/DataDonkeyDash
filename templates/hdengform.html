@@ -1,0 +1,84 @@
+{%- extends "layout.html" -%}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content -%}
+	<main role="main">
+		<div class="container">
+			<h3>{{ title }}</h3>
+			<p>Members in the report are chronic by default (hence, why they are in HD). Check the high risk members box for pulling only high risk members from this population.</p>
+			<hr>
+			<form class="form-horizontal" role="form" action="{{ url_for('hdEngReport') }}" method="POST">
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="startdt">Start Date:</label>
+					<div class="col-sm-2">
+						<input type="date" class="form-control" name="startdt" id="startdt" placeholder="e.g. 2016-01-01" required>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="enddt">End Date:</label>
+					<div class="col-sm-2">
+						<input type="date" class="form-control" name="enddt" id="enddt" required>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="group">Group(s):</label>
+					<div class="col-sm-4">
+						<select multiple class="chosen-select" name="group" id="group" data-placeholder="Select Group(s)" required>
+							<option value="FB">Florida Blue Employee Group</option>
+							<option value="FLCons">Florida Consortium</option>
+							<option value="Gator">GatorCare</option>
+							<option value="Polk">Polk County School Board</option>
+							<option value="State">State Account</option>
+							<option value="FEP">FEP</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="groupnb">Group Number(s):</label>
+					<div class="col-sm-6">
+						<input type="text" class="form-control" name="groupnb" id="groupnb" placeholder="Enter any other group number(s) here, separated by spaces or commas">
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" name="hirisk" value="1"> High risk members only
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" name="devmode" value="1"> Developer mode (Enables rendering of SQL script)
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="submit" class="btn btn-primary">Submit</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</main>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/papaparse.min.js') }}"></script>
+	<script>
+		Papa.parse($SCRIPT_ROOT + "/static/data/HD_Max_Date.csv", {
+			download: true,
+			header: true,
+			skipEmptyLines: true,
+			dynamicTyping: true,
+			complete: function(results) {
+				var max_date = results.data[0]['MAX_DATE'];
+				document.getElementById('startdt').max = max_date;
+				document.getElementById('enddt').max = max_date;
+				document.getElementById('enddt').placeholder = 'e.g. ' + max_date;
+			}
+		});
+	</script>
+{%- endblock %}

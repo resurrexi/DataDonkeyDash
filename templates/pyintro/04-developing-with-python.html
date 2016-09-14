@@ -1,0 +1,102 @@
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Developing-with-Python">Developing with Python<a class="anchor-link" href="#Developing-with-Python">&#182;</a></h1><p>You should have Python installed and configured on your machine by now. Just for a quick recap, here is a check list of everything covered up to this point:</p>
+<ol>
+<li>Installed Python via <strong>ShopMyIT</strong></li>
+<li>Verified that <strong><code>python</code></strong> is recognized in PowerShell</li>
+<li>Verified that Jupyter Notebook loads successfully</li>
+<li>Configured Jupyter</li>
+</ol>
+<hr>
+<h2 id="IDE">IDE<a class="anchor-link" href="#IDE">&#182;</a></h2><p>While Jupyter is a nice tool for developing and testing Python code, you will eventually need to utilize an integrated development environment (IDE) for building more complicated apps. An IDE provides an editor, a debugger, version control, and real-time code quality checks under one development environment. The biggest advantage of using an IDE is its support for cross-technology development. Even if your job may solely be developing statistical models in Python, those models will eventually have to be deployed and integrated in an application/environment that utilizes other technologies.</p>
+<p>There are many Python IDEs currently available. I'll just cover two:</p>
+<ul>
+<li><a href="https://www.jetbrains.com/pycharm/">PyCharm</a><ul>
+<li>Full featured IDE for Python development</li>
+<li>Most popular Python IDE</li>
+<li>Community Edition and Professional Edition<ul>
+<li>Free professional licence for students</li>
+</ul>
+</li>
+<li>Install and play</li>
+</ul>
+</li>
+<li><a href="https://www.sublimetext.com/">Sublime Text</a><ul>
+<li>Text editor with high customizability</li>
+<li>Anaconda IDE plugin</li>
+<li>Open Source</li>
+<li>Install, configure, and play</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="Version-Control">Version Control<a class="anchor-link" href="#Version-Control">&#182;</a></h2><p>TBD (Git or SVN?)</p>
+<hr>
+<h2 id="Virtualenv">Virtualenv<a class="anchor-link" href="#Virtualenv">&#182;</a></h2><h3 id="Motivation">Motivation<a class="anchor-link" href="#Motivation">&#182;</a></h3><p>In a collaborative environment, different projects may require different Python dependencies. In addition, a production environment may have different library requirements compared to a development environment. The solution to conflicting environment dependencies is virtualenv, which creates an isolated Python environment for development/test/deployment. Consider the following project (project X) with the following dependencies:</p>
+
+<pre><code>Flask==0.10.1
+Flask-SQLAlchemy==2.0
+Flask-WTF==0.12
+Jinja2==2.8
+MarkupSafe==0.23
+SQLAlchemy==1.0.8</code></pre>
+<p>What happens if a different project (project Y) depends on Jinja2 v3.0? Virtualenv will solve the problem by creating an environment for that project. As a matter of fact, project X should have its own environment. This prevents conflicts between different project dependencies, as well as keeping the global environment clean.</p>
+<p>Any other benefits?</p>
+<h3 id="Usage">Usage<a class="anchor-link" href="#Usage">&#182;</a></h3><ul>
+<li>First make sure that virtualenv is installed. With PowerShell open, type:</li>
+</ul>
+<div class="highlight"><pre><span></span>pip install virtualenv
+</pre></div>
+<ul>
+<li>Then <strong><code>cd</code></strong> into your project directory and create a virtual environment:</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="nb">cd</span> <span class="s2">&quot;C:/path/to/MyProject&quot;</span>
+virtualenv venv
+</pre></div>
+<ul>
+<li>Then activate the virtual environment:</li>
+</ul>
+<div class="highlight"><pre><span></span>venv/Scripts/activate
+</pre></div>
+<ul>
+<li>You will know that the virtual environment has been activated when <strong><code>(venv)</code></strong> precedes the console prompt.</li>
+<li>You will need to install whatever packages are required for your package into that virtual environment since it is isolated from the global environment.</li>
+<li>To deactivate the virtual environment, type:</li>
+</ul>
+<div class="highlight"><pre><span></span>deactivate
+</pre></div>
+<hr>
+<h2 id="Coding-Conventions">Coding Conventions<a class="anchor-link" href="#Coding-Conventions">&#182;</a></h2><p>When coding in Python, it is beneficial to follow certain coding conventions that make it easier to read code. In addition, following coding conventions make it easier for collaboration, as contributors to the project will already expect and be comfortable with the coding convention.</p>
+<p>Python's coding conventions are detailed by standards called <strong>PEP (Python Enhancement Proposal)</strong>. There are various PEPs that provides guides to how to write code. PEP 8 contains coding style guidelines, while PEP 257 contains documentation guidelines.</p>
+<p>Modern Python IDEs like PyCharm can enforce these PEP conventions.</p>
+<hr>
+<h2 id="Unit-Testing-and-TDD">Unit Testing and TDD<a class="anchor-link" href="#Unit-Testing-and-TDD">&#182;</a></h2><p>When developing large projects, one important aspect that is usually overlooked is testing. Testing gives confidence to the developer and in the long term, is an essential benefit to the project lifetime.</p>
+<p>One method of testing that is commonly used for development is unit testing, which involves testing the smallest parts of a program (e.g. function). The test involves writing multiple test cases, as well as edge cases, against that part to ensure that it behaves properly. Unit tests are usually automated, but can be done manually. Python includes a <strong>unittest</strong> library for writing unit tests.</p>
+<p>Unit testing is a component of Test Driven Development (TDD), which is a development process that uses test cases for developing the program. TDD works well in Agile environments, since requirements and feature enhancements are broken down into test cases, which then drive the development process of project.</p>
+<hr>
+<h2 id="Windows-vs-Linux">Windows vs Linux<a class="anchor-link" href="#Windows-vs-Linux">&#182;</a></h2><ul>
+<li>Directory separators</li>
+<li>OS specific libraries (e.g. <a href="http://gunicorn.org/">gunicorn</a>)</li>
+<li>Command lines (e.g. <strong><code>sudo</code></strong>)</li>
+</ul>
+<hr>
+<h2 id="Resources">Resources<a class="anchor-link" href="#Resources">&#182;</a></h2><ul>
+<li><a href="https://opensourcehacker.com/2015/05/02/pycharm-vs-sublime-text/">PyCharm vs Sublime Text</a></li>
+<li><a href="http://damnwidget.github.io/anaconda/IDE/">Anaconda IDE</a></li>
+<li><a href="http://docs.python-guide.org/en/latest/dev/virtualenvs/">Virtual Environments - The Hitchhiker's Guide to Python</a></li>
+<li><a href="https://virtualenv.pypa.io/en/stable/userguide/">virtualenv User Guide</a></li>
+<li><a href="http://exploreflask.com/en/latest/conventions.html">Coding Conventions</a></li>
+<li><a href="https://www.python.org/dev/peps/">PEP Index</a></li>
+<li><a href="https://www.quora.com/How-can-edge-cases-for-unit-tests-be-identified">Identifying edge cases</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Test-driven_development">Test-driven development</a></li>
+<li><a href="http://code.tutsplus.com/tutorials/beginning-test-driven-development-in-python--net-30137">Beginning Test-Driven Development in Python</a></li>
+<li><a href="http://www.obeythetestinggoat.com/pages/book.html">Obey the Testing Goat!</a></li>
+</ul>
+
+</div>
+</div>
+</div>

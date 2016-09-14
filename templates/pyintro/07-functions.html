@@ -1,0 +1,561 @@
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Functions">Functions<a class="anchor-link" href="#Functions">&#182;</a></h1><p>Python functions are code blocks that are executed whenever they are requested. Similar to SAS macros, functions have to first be defined before they can be requested. Unlike SAS macros however, functions will almost always <code>return</code> a value or object from the code block that was executed. Python already has multiple built-in functions, but custom functions can be created. Similar to SAS macros, functions can consume values or objects, known as parameters, which can then be processed within the function's code body.</p>
+<hr>
+<h2 id="Defining-a-function">Defining a function<a class="anchor-link" href="#Defining-a-function">&#182;</a></h2><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">function</span><span class="p">(</span><span class="n">parameters</span><span class="p">):</span>
+    <span class="c1"># code here to execute</span>
+</pre></div>
+<p>The <code>def</code> keyword is used to define a function in Python. <em>function</em> is the function name and can be given any name. However, if multiple functions get defined with the same name in the same namespace, the function that gets defined last will overwrite all the previous function definitions. <em>parameters</em> are the values or objects that the function can consume and process. By default, parameters have a positional behavior so arguments passed to the function must either appear in the order that they are defined in the function, or Python has to be informed of what parameter is being passed. Sometimes, a parameter doesn't have to be forced into the function. In this case, the function definition can assume a default value for the parameter if the parameter gets a pre-defined value in the function definition.</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">function</span><span class="p">(</span><span class="n">parameter</span><span class="o">=</span><span class="n">defaultValue</span><span class="p">):</span>
+    <span class="c1"># code here to execute</span>
+</pre></div>
+<hr>
+<h2 id="Calling-a-function">Calling a function<a class="anchor-link" href="#Calling-a-function">&#182;</a></h2><p>Once a function has been defined, calling a function is simply a matter of calling its name. If the function definition contains parameters, then arguments would be passed during the function call. The function would produce the result written in the code body.</p>
+<div class="highlight"><pre><span></span><span class="n">function</span><span class="p">(</span><span class="n">arguments</span><span class="p">)</span>
+</pre></div>
+<p>Let's see a working example of defining and calling a function:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Defining the function</span>
+<span class="k">def</span> <span class="nf">exponentiate</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>  <span class="c1"># note the default exponent value of 2</span>
+    <span class="sd">&quot;&quot;&quot;Exponentiate a value.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        b (int): the base number</span>
+<span class="sd">        n (int): the exponent</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        int: the exponentiated value</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">b</span><span class="o">**</span><span class="n">n</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Calling the function</span>
+<span class="k">print</span> <span class="n">exponentiate</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>  <span class="c1"># no 2nd argument</span>
+<span class="k">print</span> <span class="n">exponentiate</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>  <span class="c1"># with 2nd argument</span>
+<span class="k">print</span> <span class="n">exponentiate</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>  <span class="c1"># informing Python of the parameter being passed</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>36
+216
+216
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<hr>
+<h2 id="Variable-scoping">Variable scoping<a class="anchor-link" href="#Variable-scoping">&#182;</a></h2><p>An important concept of programming is understanding variable scopes. Parameters and any variable created within a function body are visible to the function only. This is known as scope, where visibility is defined by the namespace that the function occupies. In the case of functions, or even in <code>for</code> loops, variables created by the code block are <strong>local</strong> to that code block, and not accessible anywhere else. Consider the following:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">def</span> <span class="nf">sum</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+    <span class="k">return</span> <span class="n">total</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">print</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>  <span class="c1"># returns the local total</span>
+<span class="k">print</span> <span class="n">total</span>  <span class="c1"># returns the global total</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>6
+0
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>As you can see the global <em>total</em> variable never changes, because the function created a local instance of a <em>total</em> variable and operated on that within its own namespace. So how would one modify the global variable? You would have to declare <em>total</em> as a global variable within the function so that it knows it is being instructed to modify the global variable:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">def</span> <span class="nf">sum</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">total</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+    <span class="k">return</span> <span class="n">total</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">print</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">total</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>6
+6
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>While specifying a <code>global</code> variable is an easy solution, it is generally not recommended since it would make a program unpredicable. A better alternative to modifying the global variable is passing it down to the function as an argument and then updating the variable with an assignment:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">def</span> <span class="nf">sum</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">total</span><span class="p">):</span>
+    <span class="n">new_total</span> <span class="o">=</span> <span class="n">total</span> <span class="o">+</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+    <span class="k">return</span> <span class="n">new_total</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">total</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">total</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">total</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>6
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<hr>
+<h2 id="lambda-functions"><code>lambda</code> functions<a class="anchor-link" href="#lambda-functions">&#182;</a></h2><p>Functions can also assume an anonymous name and perform a simple operation. These special types of functions are usually one-liners and are usually used as arguments for other functions. <code>lambda</code> functions are written differently and don't have a <code>return</code> statement, but they do return a value.</p>
+<div class="highlight"><pre><span></span><span class="k">lambda</span> <span class="n">parameters</span><span class="p">:</span> <span class="c1"># the return code</span>
+</pre></div>
+<p>Here's the sum function from the above example in <code>lambda</code> expression:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="nb">sum</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">print</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>6
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Note:</strong> I mentioned earlier that <code>lambda</code> functions can be passed as arguments to other functions. This is possible because functions themselves are objects. Even the data types in Python are considered objects. This is because Python is an object-oriented language, and you will later learn that this feature makes Python particularly powerful.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<hr>
+<h2 id="Generators">Generators<a class="anchor-link" href="#Generators">&#182;</a></h2><p>I briefly mentioned generators in the previous section when discussing <code>xrange</code> as a generator function. Generators are special because they retain the values of the local variables so that whenever it encounters a <code>yield</code> statement, the values preserved in the local variables can be returned. You can almost think of them as functions that memorize the state of the previous iteration so that it can <code>yield</code> the next value when called upon. This allows generator functions to return an infinite stream of results without memory problems, simply because it generates a single result at a time. One thing to note is that in order for it to <code>yield</code> a result, the <code>next</code> method has to be called upon. This is what a <code>for</code> loop does automatically when it calls upon such a generator function.</p>
+<p>Once a generator function has exhausted all its values, it will raise a <code>StopIteration</code> error on the <code>next</code> call.</p>
+<p>Consider the following generator:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># This generator function will generate an infinite stream of even numbers</span>
+<span class="k">def</span> <span class="nf">evenNumbers</span><span class="p">():</span>
+    <span class="n">number</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">number</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">number</span>
+        <span class="n">number</span> <span class="o">+=</span> <span class="mi">1</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">numbers</span> <span class="o">=</span> <span class="n">evenNumbers</span><span class="p">()</span>  <span class="c1"># create my generator</span>
+<span class="k">print</span> <span class="nb">next</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span>  <span class="c1"># yield me a result</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>0
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Ok, cool. So I got a single result which is 0, an even number. What happens if I call <code>next</code> on it again?</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">print</span> <span class="nb">next</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>2
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Ok, so it looks like it preserved the previous state of <code>number</code>, which was 0, and then continued to add 1 until the new <code>number</code> was an even number (until the <code>yield</code> statement was executed again). Lets make it <code>yield</code> a few more times:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">print</span> <span class="nb">next</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span>
+<span class="k">print</span> <span class="nb">next</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span>
+<span class="k">print</span> <span class="nb">next</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>4
+6
+8
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>What happens when I wrap my generator in a <code>for</code> loop? Now, I'm going to add a break statement in my loop since the generator will generate an infinite sequence of numbers and I don't want my loop to run forever, so I will terminate the loop when the element exceeds 20.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">numbers</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">element</span> <span class="o">&gt;</span> <span class="mi">20</span><span class="p">:</span>
+        <span class="k">break</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span> <span class="n">element</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>10
+12
+14
+16
+18
+20
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Notice how the iteration began at 10? That's because of the preserved value at the last <code>yield</code>ed statement, which was 8 earlier. If you want to print all the even numbers from 0 to 20, then you would have to create a new generator and then run it in the <code>for</code> loop.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">new_numbers</span> <span class="o">=</span> <span class="n">evenNumbers</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">new_numbers</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">element</span> <span class="o">&gt;</span> <span class="mi">20</span><span class="p">:</span>
+        <span class="k">break</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span> <span class="n">element</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>0
+2
+4
+6
+8
+10
+12
+14
+16
+18
+20
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<hr>
+<h2 id="Resources">Resources<a class="anchor-link" href="#Resources">&#182;</a></h2><ul>
+<li><a href="http://www.tutorialspoint.com/python/python_functions.htm">Python Functions</a></li>
+<li><a href="http://sebastianraschka.com/Articles/2014_python_scope_and_namespaces.html">Python Namespaces and Scope Resolution</a></li>
+<li><a href="https://jeffknupp.com/blog/2013/04/07/improve-your-python-yield-and-generators-explained/">Generators Explained</a></li>
+</ul>
+
+</div>
+</div>
+</div>

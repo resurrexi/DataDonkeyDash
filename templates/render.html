@@ -1,0 +1,113 @@
+{%- extends "layout.html" -%}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content -%}
+	<main role="main">
+		{# Highcharts modules -#}
+		<script src="https://code.highcharts.com/highcharts.js"></script>
+		<script src="https://code.highcharts.com/modules/drilldown.js"></script>
+		{# Generate chart data as a JSON object -#}
+		<script type="text/javascript">
+			$(document).ready(function() {
+				{% for key in charts -%}
+					new Highcharts.Chart({{ charts[key]|safe }});
+				{%- endfor %}
+				$('[data-toggle="tooltip"]').tooltip();
+			});
+		</script>
+		<div class="container">
+			<h3>Results</h3>
+			<div class="row row-content">
+				<div class="col-sm-12">
+					<h4>Period: {{ startdt }} to {{ enddt }}</h4>
+					{% if hirisk == '1' -%}
+						<h4>Includes high risk members only</h4>
+					{%- endif %}
+					<div class="table-responsive">
+						<table class="table table-hover">
+							<thead>
+								<tr>
+									{%- for row in result.columns.values.tolist() -%}
+										{%- if row == 'TOTAL_MEMBERS' -%}
+											<th>{{ row }} <a href='#' data-toggle="tooltip" data-placement="top" title="Total unique members"><span class="glyphicon glyphicon-info-sign"></span></a></th>
+										{%- elif row == 'MBR_ATTEMPTED' -%}
+											<th>{{ row }} <a href='#' data-toggle="tooltip" data-placement="top" title="Unique members with at least one coaching attempt"><span class="glyphicon glyphicon-info-sign"></span></a></th>
+										{%- elif row == 'MBR_REACHED' -%}
+											<th>{{ row }} <a href='#' data-toggle="tooltip" data-placement="top" title="Unique members that were reached"><span class="glyphicon glyphicon-info-sign"></span></a></th>
+										{%- elif row == 'MBR_ENGAGED' -%}
+											<th>{{ row }} <a href='#' data-toggle="tooltip" data-placement="top" title="Unique members with at least one CMI activity or decision activity"><span class="glyphicon glyphicon-info-sign"></span></a></th>
+										{%- else -%}
+											<th>{{ row }}</th>
+										{%- endif -%}
+									{%- endfor -%}
+								</tr>
+							</thead>
+							<tfoot>
+								<tr class="table-row-total">
+									<td>Total</td>
+									{%- for item in summed -%}
+										{%- if loop.index == 1 -%}
+											<td>{{ "{:,}".format(item) }}</td>
+										{%- elif loop.index <= 3 -%}
+											<td>{{ "{:,}".format(item) }} ({{ "{:.1%}".format(item/summed['TOTAL_MEMBERS']) }})</td>
+										{%- else -%}
+											<td>{{ "{:,}".format(item) }} ({{ "{:.1%}".format(item/summed['TOTAL_MEMBERS']) }} / {{ "{:.1%}".format(item/summed['MBR_ATTEMPTED']) }} / {{ "{:.1%}".format(item/summed['MBR_REACHED']) }})</td>
+										{%- endif -%}
+									{%- endfor -%}
+								</tr>
+							</tfoot>
+							<tbody>
+								{%- for row in result.itertuples(False) -%}
+									<tr>
+										{%- for item in row -%}
+											{%- if loop.index == 1 -%}
+												<td>{{ item }}</td> {# GROUP column #}
+											{%- elif loop.index == 2 -%}
+												<td>{{ "{:,}".format(item) }}</td>
+											{%- elif loop.index <= 4 -%}
+												<td>{{ "{:,}".format(item) }} ({{ "{:.1%}".format(item/row['TOTAL_MEMBERS']) }})</td>
+											{%- else -%}
+												<td>{{ "{:,}".format(item) }} ({{ "{:.1%}".format(item/row['TOTAL_MEMBERS']) }} / {{ "{:.1%}".format(item/row['MBR_ATTEMPTED']) }} / {{ "{:.1%}".format(item/row['MBR_REACHED']) }})</td>
+											{%- endif -%}
+										{%- endfor -%}
+									</tr>
+								{%- endfor -%}
+							</tbody>
+						</table>
+					</div>
+					<small>Percentages for MBR_ATTEMPTED and MBR_REACHED columns are calculated with respect to the TOTAL_MEMBERS column. For the MBR_ENGAGED column, the percentages are calculated with respect to the TOTAL_MEMBERS, MBR_ATTEMPTED, and MBR_REACHED columns.</small>
+				</div>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+				<p style="padding:10px;"></p>
+				<hr>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row row-content">
+				{% for key in charts -%}
+					<div class="col-sm-6" id="chart{{ key }}"></div>
+				{%- endfor %}
+			</div>
+		</div>
+		{% if devmode == '1' -%}
+			<div class="container">
+				<div class="row">
+					<p style="padding:10px;"></p>
+					<hr>
+				</div>
+			</div>
+			<div class="container">
+				<div class="row row-content">
+					<div class="col-sm-12" id="code">
+						<h4>Script</h4>
+						{{ code|safe }} {# embed SQL code -#}
+					</div>
+				</div>
+			</div>
+		{%- endif %}
+	</main>
+{%- endblock %}

@@ -1,0 +1,83 @@
+{%- extends "layout.html" -%}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content -%}
+	<main role="main">
+		<div class="container">
+			<h3>{{ title }}</h3>
+			<br>
+			<div class="row row-content">
+				<div class="col-sm-12">
+					<p>
+						This demo features a simple SMS/Voice application that can be applied for outreach purposes. The app will randomly select a row from the table below and make the outreach. This random selection can be thought of as a "trigger process" that is usually used for outreach purposes. Just provide a phone number and method below to receive the outreach message.
+					</p>
+				</div>
+			</div>
+			<hr>
+			<div class="row row-content">
+				<div class="col-sm-12">
+					<div class="table-responsive">
+						<table class="table table-hover">
+							<thead>
+								<tr>
+									{%- for row in data.columns.values.tolist() -%}
+										<th>{{ row }}</th>
+									{%- endfor -%}
+								</tr>
+							</thead>
+							<tbody>
+								{%- for row in data.itertuples(False) -%}
+									<tr>
+										{%- for item in row -%}
+											<td>{{ item }}</td>
+										{%- endfor -%}
+									</tr>
+								{%- endfor -%}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<hr>
+			<form class="form-horizontal" role="form" action="{{ url_for('outreach') }}" method="POST">
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="number">Phone Number:</label>
+					<div class="col-sm-6">
+						<input type="text" class="form-control" name="number" id="number" placeholder="9049050865" required>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<div class="radio">
+							<label>
+								<input type="radio" name="method" id="method" value="voice"> Voice
+							</label>
+						</div>
+						<div class="radio">
+							<label>
+								<input type="radio" name="method" id="method" value="sms" checked> SMS
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="submit" class="btn btn-primary">Submit</button>
+					</div>
+				</div>
+			</form>
+			{% if result -%}
+				<hr>
+				<div class="container">
+					<div class="row row-content">
+						<div class="col-sm-12" id="code">
+							<h4>Result</h4>
+							{{ result|safe }} {# embed JSON response #}
+						</div>
+					</div>
+				</div>
+			{%- endif %}
+		</div>
+	</main>
+{%- endblock %}

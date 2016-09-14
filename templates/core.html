@@ -1,0 +1,59 @@
+{%- extends "layout.html" -%}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content -%}
+    <main role="main">
+        <div class="container">
+            {% if result.index|length > 0 -%}
+            <h3>Results</h3>
+            <div class="row row-content">
+                <div class="col-sm-12">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Population</th>
+                                    <th>Identifed</th>
+                                    <th>Engaged</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{ result.index|length }}</td>
+                                    <td>{{ result['MBR_IDENTIFIED'].sum()|round|int }}</td>
+                                    <td>{{ result['MBR_ENGAGED'].sum()|round|int }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {%- else -%}
+            <h3>{{ title }}</h3>
+            <br>
+            <p>This utility tool will feed from a member file and ouput the identified and engaged counts of these members for the Disease Management programs. The <b>Member Column</b> is the column name in the file that contains the consumer member IDs.</p>
+            <hr>
+            <form class="form-horizontal" role="form" action="{{ url_for('dmEng') }}" enctype="multipart/form-data" method="POST">
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="file">File (csv/xlsx):</label>
+                    <div class="col-sm-6">
+                        <input type="file" class="file" name="file" id="file" data-show-upload="false" data-allowed-file-extensions='["csv","xlsx"]' data-show-preview="false">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="memField">Member Column:</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" name="memField" id="memField" placeholder="CNSR_INDV_ID" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </div>
+            </form>
+            {%- endif %}
+        </div>
+    </main>
+{%- endblock %}

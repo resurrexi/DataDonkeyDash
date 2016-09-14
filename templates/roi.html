@@ -1,0 +1,257 @@
+{%- extends "layout.html" -%}
+
+{% macro roi_table_row(row, table_loop) -%}
+	{%- for item in row -%}
+		{%- if loop.index >= 2 -%}
+			{%- if (loop.index == 5) -%}
+				{%- if item < 0.05 -%} {# Highlight significant p-values -#}
+					<td class="table-row-sig">Significant <span class="glyphicon glyphicon-star"></span></td>
+				{%- else -%}
+					<td>Insignificant</td>
+				{%- endif -%}
+			{%- elif loop.index == 4 -%}
+				{%- if table_loop.index == 2 -%} {# Util -#}
+					{%- if item < 0 -%}
+						<td>{{ "{0:,.2f}".format(item) }} <span class="fa fa-thumbs-o-down" style="color:red"></span></td>
+					{%- else -%}
+						<td>{{ "{0:,.2f}".format(item) }} <span class="fa fa-thumbs-o-up" style="color:green"></span></td>
+					{%- endif -%}
+				{%- else -%}
+					{%- if item < 0 -%}
+						<td>{{ "${0:,.0f}".format(item) }} <span class="fa fa-thumbs-o-down" style="color:red"></span></td>
+					{%- else -%}
+						<td>{{ "${0:,.0f}".format(item) }} <span class="fa fa-thumbs-o-up" style="color:green"></span></td>
+					{%- endif -%}
+				{%- endif -%}
+			{%- else -%}
+				{%- if table_loop.index == 2 -%} {# Util -#}
+					<td>{{ "{0:,.2f}".format(item) }}</td>
+				{%- else -%}
+					<td>{{ "${0:,.0f}".format(item) }}</td>
+				{%- endif -%}
+			{%- endif -%}
+		{%- else -%}
+			<td>{{ item }}</td>
+		{%- endif -%}
+	{%- endfor -%}
+{%- endmacro %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content -%}
+	<main role="main">
+		{% if result -%}
+			{# Highcharts modules -#}
+			<script src="https://code.highcharts.com/highcharts.js"></script>
+			<script src="https://code.highcharts.com/modules/drilldown.js"></script>
+			{# Generate chart data as a JSON object -#}
+			<script type="text/javascript">
+				$(document).ready(function() {
+					{% for lob in result[0] -%} {# result[0] = costResults, result[1] = utilResults -#}
+						{% for key in result[0][lob] -%}
+							{# {%- if key == 1 -%} -#}
+							{%- if key == 12 -%}
+								new Highcharts.Chart({{ result[0][lob][key]|safe }});
+							{# {%- else -%}
+							 	new Highcharts.Chart({{ result[0][lob][key]|safe }});
+							 	new Highcharts.Chart({{ result[1][lob][key]|safe }}); -#}
+							{%- endif -%}
+						{%- endfor %}
+					{%- endfor %}
+					$('[data-toggle="tooltip"]').tooltip();
+				});
+			</script>
+		{%- endif %}
+		<div class="container">
+			<h3>{{ title }}</h3>
+			<p>This dashboard produces ROI results for CM/DM programs. Please use the form below to set the engagement date window you want to pull. The dashboard currently does a pre/post comparison. The pre-period is defined as the 6 months experience prior to episode engagement date, where the engagement date is either the true engagement date or a proxy date if the engagement date doesn't exist. The post-period is the 6 months experience following the engagement date.</p>
+			<p>
+				<a href="{{ url_for('download', filename='ROI_workflow') }}">ROI Technical Process Workflow</a><br>
+				<a href="{{ url_for('download', filename='ROI_methodology') }}">ROI Methodology</a><br>
+			</p>
+			<hr>
+			{% if result -%}
+				<h3>Results</h3>
+				<h4>Time period: Rolling 12 months to {{ yrmo }} <a href='#' data-toggle="tooltip" data-placement="right" title="Members identified in the 12 months"><span class="glyphicon glyphicon-info-sign"></span></a></h4>
+				<h4>Program: {{ program }}</h4>
+				<p>Given the program costs of {{ "${0:,.0f}".format(prog_cost) }}, the expected ROI is <b>{{ "{0:,.2f}".format((total_savings - prog_cost)/prog_cost) }}</b>. Please see below for additional details.</p>
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<ul class="nav nav-tabs">
+						{% for lob in result[0] -%}
+							{%- if loop.index == 1 -%} {# Cost -#}
+								<li class="active"><a href="#{{ lob }}" data-toggle="tab">{{ lob }}</a></li>
+							{%- else -%}
+								<li><a href="#{{ lob }}" data-toggle="tab">{{ lob }}</a></li>
+							{%- endif -%}
+						{%- endfor %}
+						</ul>
+						<div class="tab-content">
+							{% for lob in result[0] -%}
+								<div class="tab-pane active" id="{{ lob }}">
+									<div class="row">
+										<ul class="nav nav-pills">
+											<li class="active"><a href="#{{ lob }}_cost" data-toggle="tab">Cost</a></li>
+											<li><a href="#{{ lob }}_util" data-toggle="tab">Utilization</a></li>
+										</ul>
+										<div class="tab-content">
+											{% for table in data -%}
+												{%- set table_loop = loop -%}
+												{%- if table_loop.index == 1 -%}
+													<div class="tab-pane active" id="{{ lob }}_cost">
+												{%- else -%}
+													<div class="tab-pane" id="{{ lob }}_util">
+												{%- endif -%}
+												<div class="row">
+													<div class="col-sm-12">
+														<div class="table-responsive">
+															<table class="table table-hover">
+																<thead>
+																	<tr>
+																		{% for row in table[cols].columns.values.tolist() -%}
+																			{%- if loop.index >= 2 and loop.index <= 4 -%}
+																				{%- if table_loop.index == 1 -%}
+																					<th>{{ row }} <a href='#' data-toggle="tooltip" data-placement="top" title="Figures represent dollar amounts over 6 months"><span class="glyphicon glyphicon-info-sign"></span></a></th>
+																				{%- else -%}
+																					<th>{{ row }} <a href='#' data-toggle="tooltip" data-placement="top" title="Figures represent utilization per thousand over 6 months"><span class="glyphicon glyphicon-info-sign"></span></a></th>
+																				{%- endif -%}
+																			{%- else -%}
+																				<th>{{ row }}</th>
+																			{%- endif -%}
+																		{%- endfor %}
+																	</tr>
+																</thead>
+																<tfoot>
+																	{% for row in table[table['LOB'] == lob][table['SERVICE_CAT'].isin(['TOTAL MEDICAL','TOTAL RX'])][cols].itertuples(False) -%}
+																		<tr class="table-row-subtotal">
+																			{{ roi_table_row(row, table_loop) }}</b>
+																		</tr>
+																	{%- endfor %}
+																	{% for row in table[table['LOB'] == lob][table['SERVICE_CAT'].isin(['TOTAL ALL'])][cols].itertuples(False) -%}
+																		<tr class="table-row-total"> {# Total all row -#}
+																			{{ roi_table_row(row, table_loop) }}
+																		</tr>
+																	{%- endfor %}
+																</tfoot>
+																<tbody>
+																	{% for row in table[table['LOB'] == lob][-table['SERVICE_CAT'].isin(['TOTAL ALL','TOTAL MEDICAL','TOTAL RX'])][cols].itertuples(False) -%}
+																		<tr>
+																			{{ roi_table_row(row, table_loop) }}
+																		</tr>
+																	{%- endfor %}
+																</tbody>
+															</table>
+														</div>
+													</div>
+												</div> <!-- row -->
+												{# Accordion for cost graph -#}
+												{%- if table_loop.index == 1 -%}
+													<div class="panel-group">
+														<div class="panel panel-default">
+															<div class="panel-heading">
+																<h4 class="panel-title">
+																	<a data-toggle="collapse" href="#{{ lob }}_costChart">Toggle Chart</a>
+																</h4>
+															</div>
+															<div id="{{ lob }}_costChart" class="panel-collapse collapse in">
+																<div class="row row-content">
+																	{% for key in result[0][lob] -%}
+																		{# {%- if key == 1 -%} -#}
+																		{%- if key == 12 -%}
+																			<div class="col-sm-12" id="costChart{{ key }}_{{ lob }}"></div>
+																		{# {%- else -%}
+																				<div class="col-sm-12" id="utilChart{{ key }}_{{ lob }}"></div> -#}
+																		{%- endif -%}
+																	{%- endfor %}
+																</div>
+															</div>
+														</div>
+													</div>
+												{%- endif -%}
+											</div> <!-- tab-pane -->
+											{%- endfor %}
+										</div> <!-- tab-content -->
+									</div>
+								</div>
+							{%- endfor %}
+						</div>
+					</div>
+				</div>
+				{# chart overflow fix -#}
+				{% for lob in result[0] -%}
+					{%- if loop.index != 1 -%}
+						<script type="text/javascript">
+							setTimeout(function(){
+								document.getElementById("{{ lob }}").className = document.getElementById("{{ lob }}").className.replace(/(?:^|\s)active(?!\S)/g, "");
+							}, 1);
+						</script>
+					{%- endif -%}
+					<script type="text/javascript">
+						setTimeout(function(){
+							document.getElementById("{{ lob }}_costChart").className = document.getElementById("{{ lob }}_costChart").className.replace(/(?:^|\s)in(?!\S)/g, "");
+						}, 1);
+					</script>
+				{%- endfor %}
+				{# style significant rows -#}
+<!-- 				<script type="text/javascript">
+					var x = document.getElementsByClassName("table-row-sig");
+					for (var i = 0; i < x.length; i++) {
+						x[i].parentElement.style.backgroundColor = '#ccd9ff';
+					}
+				</script> -->
+			{%- else -%}
+				<form class="form-horizontal" role="form" action="{{ url_for('roi') }}" method="POST">
+					<div class="form-group">
+						<label class="control-label col-sm-2" for="startdt">Start Date:</label>
+						<div class="col-sm-2">
+							<input type="date" class="form-control" name="startdt" id="startdt" placeholder="e.g. 2016-01-01" disabled>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-2" for="enddt">End Date:</label>
+						<div class="col-sm-2">
+							<input type="date" class="form-control" name="enddt" id="enddt" disabled>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-2" for="yyyymm">Rolling year YYYYMM:</label>
+						<div class="col-sm-2">
+							<input type="text" class="form-control" name="yyyymm" id="yyyymm" placeholder="e.g. 201601 (optional)">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-2" for="program">Program:</label>
+						<div class="col-sm-2">
+							<select class="form-control" name="program" id="program" required>
+								<option value="CM">CM</option>
+								<option value="DM">DM</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-2" for="progcost">Program Cost:</label>
+						<div class="col-sm-2">
+							<div class="input-group">
+								<span class="input-group-addon">$</span><input type="number" class="form-control" name="progcost" id="progcost" min="1" required="">
+							</div>
+						</div>
+					</div>
+<!-- 					<div class="form-group">
+						<label class="control-label col-sm-2" for="LOB">LOB(s):</label>
+						<div class="col-sm-2">
+							<select multiple class="form-control" size=2 name="LOB" id="LOB" required>
+								<option value="Commercial">Commercial</option>
+								<option value="MedAdvantage">MedAdvantage</option>
+							</select>
+						</div>
+					</div> -->
+					<div class="form-group">
+						<div class="col-sm-offset-2 col-sm-10">
+							<button type="submit" class="btn btn-primary">Submit</button>
+						</div>
+					</div>
+				</form>
+			{%- endif -%}
+		</div>
+	</main>
+{%- endblock %}

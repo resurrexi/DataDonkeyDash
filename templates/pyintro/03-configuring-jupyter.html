@@ -1,0 +1,142 @@
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Configuring-Jupyter">Configuring Jupyter<a class="anchor-link" href="#Configuring-Jupyter">&#182;</a></h1><hr>
+<h2 id="Determining-location-of-Jupyter-config">Determining location of Jupyter config<a class="anchor-link" href="#Determining-location-of-Jupyter-config">&#182;</a></h2><ul>
+<li>Open Windows PowerShell (Start Menu &gt; Search for <strong>powershell</strong> &gt; First item in search results)</li>
+<li>In the console, type:</li>
+</ul>
+<div class="highlight"><pre><span></span>jupyter --config-dir
+</pre></div>
+<ul>
+<li>Take note of the directory path from the command</li>
+<li>Type <strong><code>exit</code></strong> to close Powershell</li>
+</ul>
+<hr>
+<h2 id="Generating-a-Jupyter-config-file">Generating a Jupyter config file<a class="anchor-link" href="#Generating-a-Jupyter-config-file">&#182;</a></h2><ul>
+<li>In PowerShell, type:</li>
+</ul>
+<div class="highlight"><pre><span></span>jupyter notebook --generate-config
+</pre></div>
+<ul>
+<li>This will create a config file that changes the way how Jupyter starts up</li>
+</ul>
+<hr>
+<h2 id="Changing-the-starting-directory">Changing the starting directory<a class="anchor-link" href="#Changing-the-starting-directory">&#182;</a></h2><h3 id="Method-1">Method 1<a class="anchor-link" href="#Method-1">&#182;</a></h3><ul>
+<li>Open the config file generated from the above section, with a text editor of your choice</li>
+<li>Search for <strong><code>notebook_dir</code></strong></li>
+</ul>
+<div class="highlight"><pre><span></span><span class="c1"># c.NotebookApp.notebook_dir = u&#39;&#39;</span>
+</pre></div>
+<ul>
+<li>Uncomment the line (delete the <strong><code>#</code></strong>) and in the quotes, enter the directory path of your choice</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="n">c</span><span class="o">.</span><span class="n">NotebookApp</span><span class="o">.</span><span class="n">notebook_dir</span> <span class="o">=</span> <span class="s1">u&#39;C:/My Directory/jupyter/notebooks&#39;</span> <span class="c1"># Note the foward slash</span>
+</pre></div>
+<ul>
+<li>Save and close file</li>
+<li>Run Jupyter Notebook from the Start Menu</li>
+</ul>
+<h3 id="Method-2">Method 2<a class="anchor-link" href="#Method-2">&#182;</a></h3><ul>
+<li>This method assumes you have a Jupyter config file outside the default config directory, with a <strong><code>notebook_dir</code></strong> path set</li>
+<li>In PowerShell, type:</li>
+</ul>
+<div class="highlight"><pre><span></span>jupyter notebook --config<span class="o">=</span><span class="s1">&#39;C:/path/to/jupyter/config.py&#39;</span>
+</pre></div>
+<ul>
+<li>This starts Jupyter Notebook, with the starting directory defined in <em><code>C:/path/to/jupyter/config.py</code></em></li>
+</ul>
+<h3 id="Method-3">Method 3<a class="anchor-link" href="#Method-3">&#182;</a></h3><ul>
+<li>This method assumes you do not have a Jupyter config file or a <strong><code>notebook_dir</code></strong> path set</li>
+<li>In PowerShell, type:</li>
+</ul>
+<div class="highlight"><pre><span></span>jupyter notebook --notebook_dir<span class="o">=</span><span class="s1">&#39;C:/path/to/jupyter/notebooks&#39;</span>
+</pre></div>
+<ul>
+<li>This starts Jupyter Notebook, with the starting directory at <em><code>C:/path/to/jupyter/notebooks</code></em></li>
+</ul>
+<hr>
+<h2 id="Disabling-browser-startup">Disabling browser startup<a class="anchor-link" href="#Disabling-browser-startup">&#182;</a></h2><h3 id="Method-1">Method 1<a class="anchor-link" href="#Method-1">&#182;</a></h3><ul>
+<li>Using the existing config file generated from above, open the file with a text editor of your choice</li>
+<li>Search for <strong><code>open_browser</code></strong></li>
+</ul>
+<div class="highlight"><pre><span></span><span class="c1"># c.NotebookApp.open_browser = True</span>
+</pre></div>
+<ul>
+<li>Uncomment the line (delete the <strong><code>#</code></strong>) and change <strong><code>True</code></strong> to <strong><code>False</code></strong>:</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="n">c</span><span class="o">.</span><span class="n">NotebookApp</span><span class="o">.</span><span class="n">open_browser</span> <span class="o">=</span> <span class="bp">False</span>
+</pre></div>
+<ul>
+<li>Save and close file</li>
+<li>Run Jupyter Notebook from Start Menu</li>
+</ul>
+<h3 id="Method-2">Method 2<a class="anchor-link" href="#Method-2">&#182;</a></h3><ul>
+<li>This method assumes you do not have a Jupyter config file or your <strong><code>open_browser</code></strong> settings is commented out</li>
+<li>In PowerShell, type:</li>
+</ul>
+<div class="highlight"><pre><span></span>jupyter notebook --no-browser
+</pre></div>
+<hr>
+<h2 id="Convert-.ipynb-to-.py-on-save">Convert <em>.ipynb</em> to <em>.py</em> on save<a class="anchor-link" href="#Convert-.ipynb-to-.py-on-save">&#182;</a></h2><ul>
+<li>By default, Jupyter saves notebooks in <em>.ipynb</em></li>
+</ul>
+<h3 id="Method-1">Method 1<a class="anchor-link" href="#Method-1">&#182;</a></h3><ul>
+<li>Using the existing config file generated from above, open the file with a text editor of your choice</li>
+<li>Add the following code at the beginning of the file:</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">check_call</span>
+
+<span class="n">c</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">post_save</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">os_path</span><span class="p">,</span> <span class="n">contents_manager</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;post-save hook for converting notebooks to .py scripts&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">model</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;notebook&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="c1"># only do this for notebooks</span>
+    <span class="n">d</span><span class="p">,</span> <span class="n">fname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os_path</span><span class="p">)</span>
+    <span class="n">check_call</span><span class="p">([</span><span class="s1">&#39;jupyter&#39;</span><span class="p">,</span> <span class="s1">&#39;nbconvert&#39;</span><span class="p">,</span> <span class="s1">&#39;--to&#39;</span><span class="p">,</span> <span class="s1">&#39;script&#39;</span><span class="p">,</span> <span class="n">fname</span><span class="p">],</span> <span class="n">cwd</span><span class="o">=</span><span class="n">d</span><span class="p">)</span>
+</pre></div>
+<ul>
+<li>Search for <code>post_save_hook</code></li>
+</ul>
+<div class="highlight"><pre><span></span><span class="c1"># c.FileContentsManager.post_save_hook = None</span>
+</pre></div>
+<ul>
+<li>Uncomment the line and set <strong><code>None</code></strong> to <strong><code>post_save</code></strong>:</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="n">c</span><span class="o">.</span><span class="n">FileContentsManager</span><span class="o">.</span><span class="n">post_save_hook</span> <span class="o">=</span> <span class="n">post_save</span>
+</pre></div>
+<ul>
+<li>Save and close file</li>
+<li>Run Jupyter Notebook from Start Menu and test</li>
+<li>Upon save, a <em>.py</em> should appear in the same directory as the <em>.ipynb</em> with the same name</li>
+</ul>
+<h3 id="Method-2">Method 2<a class="anchor-link" href="#Method-2">&#182;</a></h3><ul>
+<li>Assuming you know the location of the <em>.ipynb</em> to convert</li>
+<li>In PowerShell, type:</li>
+</ul>
+<div class="highlight"><pre><span></span>jupyter nbconvert --to script <span class="s1">&#39;C:/path/to/MyBook.ipynb&#39;</span>
+</pre></div>
+<ul>
+<li>Note: The generated <em>.py</em> file will be saved in the directory where the command was entered, not where the <em>.ipynb</em> is located</li>
+</ul>
+<hr>
+<h2 id="Other-configurable-options">Other configurable options<a class="anchor-link" href="#Other-configurable-options">&#182;</a></h2><ul>
+<li>Port</li>
+<li>Converting <em>.ipynb</em> to other formats</li>
+<li>IP</li>
+<li>SSL/TLS (<code>certfile</code> and <code>keyfile</code>)</li>
+<li>Password for web auth</li>
+</ul>
+<hr>
+<h2 id="Resources">Resources<a class="anchor-link" href="#Resources">&#182;</a></h2><ul>
+<li><a href="http://jupyter-notebook.readthedocs.io/en/latest/index.html">Jupyter User Documentation</a></li>
+</ul>
+
+</div>
+</div>
+</div>

@@ -1,0 +1,91 @@
+{%- extends "layout.html" -%}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content -%}
+    <main role="main">
+        <div class="container">
+            <div class="row row-content">
+                {% if chapters -%}
+                    <div class="col-md-3" id="navmenu">
+                        <h3>{{ title }}</h3>
+                        <nav>
+                            <ol>
+                                {% for chapter in chapters -%}
+                                    {% if ('pyintro/' + chapter + '.html') == section -%}
+                                        <li><b><a href="{{ url_for('pycourse', section=chapter) }}">{{ chapter.replace('-', ' ').title()[3:] }}</a></b></li>
+                                    {%- else -%}
+                                        <li><a href="{{ url_for('pycourse', section=chapter) }}">{{ chapter.replace('-', ' ').title()[3:] }}</a></li>
+                                    {%- endif %}
+                                {%- endfor %}
+                            </ol>
+                        </nav>
+                    </div>
+                {%- endif %}
+                {% if section -%}
+                    <div class="col-md-offset-3 col-md-9"> {# must apply offset because navmenu is fixed #}
+                        {%- include section -%}
+                        <hr>
+                        <div class="row row-content">
+                            <div class="col-xs-6">
+                                {% if prv -%}
+                                    <p><a href="{{ url_for('pycourse', section=prv) }}"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Previous</a></p>
+                                {%- endif %}
+                            </div>
+                            <div class="col-xs-6">
+                                {% if nxt -%}
+                                    <p style="text-align: right"><a href="{{ url_for('pycourse', section=nxt) }}">Next <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a></p>
+                                {%- endif %}
+                            </div>
+                        </div>
+                    </div>
+                {%- endif %}
+            </div>
+        </div>
+    </main>
+    <script>
+        // $(document).ready(function(){
+            var tables = document.getElementsByTagName("table");
+            var jupyterprompts = document.getElementsByClassName("cell border-box-sizing code_cell rendered");
+            var headers = ["h1", "h2", "h3", "h4", "h5", "h6"];
+            function toggleAnchor() {
+                this.getElementsByClassName("anchor-link")[0].style.visibility = this.getElementsByClassName("anchor-link")[0].style.visibility == "hidden" ? "" : "hidden";
+            }
+            for (var i = 0; i < headers.length; i++) {
+                var heads = document.getElementsByTagName(headers[i]);
+                for (var j = 0; j < heads.length; j++) {
+                    console.log(heads[j].getElementsByClassName("anchor-link")[0]);
+                    if (typeof(heads[j].getElementsByClassName("anchor-link")[0]) != "undefined" && heads[j].getElementsByClassName("anchor-link")[0] != "null") {
+                        heads[j].getElementsByClassName("anchor-link")[0].style.visibility = "hidden";
+                        heads[j].addEventListener("mouseover", toggleAnchor);
+                        heads[j].addEventListener("mouseout", toggleAnchor);
+                    }
+                }
+            }
+            for (var i = 0; i < tables.length; i++) {
+                tables[i].classList ? tables[i].classList.add("table") : tables[i].className += " table";
+                tables[i].classList ? tables[i].classList.add("table-hover") : tables[i].className += " table-hover";
+                tables[i].style.border = "0px";
+            }
+            for (var i = 1; i <= jupyterprompts.length; i++) {
+                // jupyterprompts[i].classList ? jupyterprompts[i].classList.add("container") : jupyterprompts[i].className += " container";
+                var children = jupyterprompts[i-1].children;
+                for (var j = 0; j < children.length; j++) {
+                    children[j].classList ? children[j].classList.add("row") : children[j].className += " row";
+                    if (children[j].className == "input row") {
+                        var in_label = children[j].getElementsByClassName("prompt input_prompt")[0];
+                        var in_code = children[j].getElementsByClassName("inner_cell")[0];
+                        in_label.style.textAlign = "right";
+                        in_label.classList ? in_label.classList.add("col-xs-1") : in_label.className += " col-xs-1";
+                        in_label.innerHTML = "[" + i + "]:"
+                        in_code.classList ? in_code.classList.add("col-xs-11") : in_code.className += " col-xs-11";
+                    } else {
+                        var out_code = children[j].getElementsByClassName("output")[0];
+                        out_code.classList ? out_code.classList.add("col-xs-offset-1") : out_code.className += " col-xs-offset-1";
+                        out_code.classList ? out_code.classList.add("col-xs-11") : out_code.className += "col-xs-11";
+                    }
+                }
+            }
+        // });
+    </script>
+{%- endblock %}

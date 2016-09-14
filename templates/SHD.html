@@ -1,0 +1,56 @@
+{%- extends "layout.html" -%}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content -%}
+    <main role="main">
+        {# Highcharts modules -#}
+        <script src="https://code.highcharts.com/highcharts.js"></script>
+        <script src="https://code.highcharts.com/modules/drilldown.js"></script>
+        <script src="https://code.highcharts.com/modules/data.js"></script>
+        <script src="{{ url_for('static', filename='js/shd.js') }}"></script>
+        <div class="container">
+            <h3>{{ title }}</h3>
+            <div class="row row-content">
+                <div class="col-xs-12" id="chart1"></div>
+            </div>
+            <div class="row row-content">
+                <div class="col-xs-12 col-sm-6" id="chart2"></div>
+                <div class="col-xs-12 col-sm-6" id="chart3"></div>
+            </div>
+            <hr>
+            <div class="table-responsive">
+                <table data-toggle="table" data-pagination="true" data-search="true" data-sortable="true" id="datasets">
+                    <thead>
+                        <tr>
+                            {%- for row in datasets.columns.values.tolist() -%}
+                                <th data-sortable="true">{{ row }}</th>
+                            {%- endfor -%}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {%- for row in datasets.itertuples(False) -%}
+                            <tr>
+                                {%- for item in row -%}
+                                    <td>{{ item }}</td>
+                                {%- endfor -%}
+                            </tr>
+                        {%- endfor -%}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/papaparse.min.js') }}"></script>
+    <script>
+        Papa.parse($SCRIPT_ROOT + "/static/data/dsihealth_datasets.csv", {
+            download: true,
+            header: true,
+            skipEmptyLines: true,
+            dynamicTyping: true,
+            complete: function(results) {
+                console.log(results);
+            }
+        });
+    </script>
+{%- endblock %}

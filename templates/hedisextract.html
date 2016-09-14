@@ -1,0 +1,94 @@
+{%- extends "layout.html" -%}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content -%}
+	<main role="main">
+		<div class="container">
+			<h3>{{ title }}</h3>
+			<p>This utility tool extracts non-compliant Medicare members based on HEDIS data and generates a CSV file for emailing. RACF required to send the email.</p>
+			<hr>
+			<form class="form-horizontal" role="form" action="{{ url_for('hedisExtract') }}" method="POST">
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="measure">Measure(s):</label>
+					<div class="col-sm-6">
+						<select multiple class="chosen-select" name="measure" id="measure" data-placeholder="Select measure(s)">
+							{% for measure in measures.itertuples(False) -%}
+								<option value="{{ measure['MEASURE_CODE'] }}">{{ measure['MEASURE_CODE'] }} - {{ measure['PARENT_MEASURE_DESCRIPTION'] }}</option>
+							{%- endfor %}
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="provider">Provider(s):</label>
+					<div class="col-sm-6">
+						<select multiple class="chosen-select" name="provider" id="provider" data-placeholder="Select provider(s)">
+							{% for provider in providers.itertuples(False) -%}
+								<option value="{{ provider['ATTR_PVDR'] }}">{{ provider['ATTR_PVDR'] }} - {{ provider['PVDR_LAST_NM'] }}, {{ provider['PVDR_1ST_NM'] }}</option>
+							{%- endfor %}
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="contract">Contract(s):</label>
+					<div class="col-sm-2">
+						<select multiple class="chosen-select" name="contract" id="contract" data-placeholder="Select contract(s)">
+							<option value="MED HMO">HMO</option>
+							<option value="MED RPPO">RPPO</option>
+							<option value="MED LPPO">LPPO</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="pod">POD(s):</label>
+					<div class="col-sm-6">
+						<input type="text" class="form-control" name="pod" id="pod" placeholder="Enter pod(s) here, separated by spaces or commas (e.g. 3 8 11)">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="zip">Zip Code(s):</label>
+					<div class="col-sm-6">
+						<input type="text" class="form-control" name="zip" id="zip" placeholder="Enter zip code(s) here, separated by spaces or commas">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="racf">RACF:</label>
+					<div class="col-sm-2">
+						<input type="text" class="form-control" name="racf" id="racf" placeholder="Enter your RACF" required>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="submit" class="btn btn-primary">Generate</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</main>
+	<script>
+		$(document).ready(function(){
+			$('#zip').on('change', function(e){
+				if(this.value.length == 0){
+					// enable pod select
+					$("#pod").prop('disabled', false);
+					$("#pod").attr('disabled', false);
+				}else{
+					// disable pod select
+					$("#pod").prop('disabled', true);
+					$("#pod").attr('disabled', true);
+				};
+			});
+			$('#pod').on('change', function(e){
+				if(this.value.length == 0){
+					// enable zip select
+					$("#zip").prop('disabled', false);
+					$("#zip").attr('disabled', false);
+				}else{
+					// disable zip select
+					$("#zip").prop('disabled', true);
+					$("#zip").attr('disabled', true);
+				};
+			});
+		});
+	</script>
+{%- endblock %}

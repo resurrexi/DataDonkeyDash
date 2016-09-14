@@ -1,0 +1,78 @@
+{%- extends "layout.html" -%}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content -%}
+	<main role="main">
+		<div class="container">
+			<h3>{{ title }}</h3>
+			<p>This utility tool mimics the Jiva UM TAT Report as an alternative and temporary solution to the original report. Leaving the selection fields blank defaults to selecting all the items within that field.</p>
+			<hr>
+			<form class="form-horizontal" role="form" action="{{ url_for('tatReport') }}" method="POST">
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="startdt">Start Date:</label>
+					<div class="col-sm-2">
+						<input type="date" class="form-control" name="startdt" id="startdt" placeholder="e.g. 2016-01-01" required>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="enddt">End Date:</label>
+					<div class="col-sm-2">
+						<input type="date" class="form-control" name="enddt" id="enddt" placeholder="e.g. 2016-01-31" required>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="manager">Manager(s):</label>
+					<div class="col-sm-6">
+						<select multiple class="chosen-select" name="manager" id="manager" data-placeholder="Select manager(s)">
+							{% for manager in managers -%}
+								<option value="{{ manager }}">{{ manager }}</option>
+							{%- endfor %}
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="lob">LOB(s):</label>
+					<div class="col-sm-6">
+						<select multiple class="chosen-select" name="lob" id="lob" data-placeholder="Select LOB(s)">
+							{% for lob in lobs -%}
+								<option value="{{ lob }}">{{ lob }}</option>
+							{%- endfor %}
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="eptype">Episode Type(s):</label>
+					<div class="col-sm-4">
+						<select multiple class="chosen-select" name="eptype" id="eptype" data-placeholder="Select episode type(s)">
+							<option value="IP">IP</option>
+							<option value="OP">OP</option>
+							<option value="Appeal">Appeal</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="epclass">Episode Class(es):</label>
+					<div class="col-sm-4">
+						<select multiple class="chosen-select" name="epclass" id="epclass" data-placeholder="Select episode class(es)">
+							{% for epclass in epclasses -%}
+								<option value="{{ epclass }}">{{ epclass }}</option>
+							{%- endfor %}
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="racf">RACF:</label>
+					<div class="col-sm-2">
+						<input type="text" class="form-control" name="racf" id="racf" placeholder="Enter your RACF" required>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="submit" class="btn btn-primary">Generate</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</main>
+{%- endblock %}

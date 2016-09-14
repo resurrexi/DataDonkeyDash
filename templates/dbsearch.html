@@ -1,0 +1,47 @@
+{%- extends "layout.html" -%}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content -%}
+	<main role="main">
+		<div class="container">
+			<h3>{{ title }}</h3>
+			<div class="row row-content">
+				<div class="col-sm-12">
+					<p>Use this utility tool to search for field names. You can use full field terms (e.g. DACL_ACTV_IN) or partial (e.g. ACTV_IN). Search is not case sensitive. Search query must be at least 3 characters long.</p>
+					<form class="form-inline" role="form" action="{{ url_for('dbsearch') }}" method="POST">
+						<div class="form-group">
+							<input type="text" class="form-control" name="dbField" id="dbField" placeholder="e.g. ACTV_IN" required>
+						</div>
+						<div class="form-group">
+							<button type="submit" class="btn btn-primary">Submit</button>
+						</div>
+					</form>
+					{% if datalist.index|length > 0 -%}
+						<hr>
+						<div class="table-responsive">
+							<table data-toggle="table" data-pagination="true" data-search="true">
+								<thead>
+									<tr>
+										{%- for row in datalist.columns.values.tolist() -%}
+											<th>{{ row }}</th>
+										{%- endfor -%}
+									</tr>
+								</thead>
+								<tbody>
+									{%- for row in datalist.itertuples(False) -%}
+										<tr>
+											{%- for item in row -%}
+												<td>{{ item }}</td>
+											{%- endfor -%}
+										</tr>
+									{%- endfor -%}
+								</tbody>
+							</table>
+						</div>
+					{%- endif %}
+				</div>
+			</div>
+		</div>
+	</main>
+{%- endblock %}
