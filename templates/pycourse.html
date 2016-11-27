@@ -1,6 +1,11 @@
 {%- extends "layout.html" -%}
 
 {% block title %}{{ title }}{% endblock %}
+{% block morehead %}
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+{% endblock %}
 
 {% block content -%}
     <main role="main">
@@ -48,13 +53,14 @@
             var tables = document.getElementsByTagName("table");
             var jupyterprompts = document.getElementsByClassName("cell border-box-sizing code_cell rendered");
             var headers = ["h1", "h2", "h3", "h4", "h5", "h6"];
+            var jupytercharts = document.getElementsByClassName("output_png output_subarea");
             function toggleAnchor() {
                 this.getElementsByClassName("anchor-link")[0].style.visibility = this.getElementsByClassName("anchor-link")[0].style.visibility == "hidden" ? "" : "hidden";
             }
             for (var i = 0; i < headers.length; i++) {
                 var heads = document.getElementsByTagName(headers[i]);
                 for (var j = 0; j < heads.length; j++) {
-                    console.log(heads[j].getElementsByClassName("anchor-link")[0]);
+                    //console.log(heads[j].getElementsByClassName("anchor-link")[0]);
                     if (typeof(heads[j].getElementsByClassName("anchor-link")[0]) != "undefined" && heads[j].getElementsByClassName("anchor-link")[0] != "null") {
                         heads[j].getElementsByClassName("anchor-link")[0].style.visibility = "hidden";
                         heads[j].addEventListener("mouseover", toggleAnchor);
@@ -63,9 +69,12 @@
                 }
             }
             for (var i = 0; i < tables.length; i++) {
+                if (tables[i].classList.contains('dataframe')) {
+                    tables[i].parentNode.classList ? tables[i].parentNode.classList.add("table-div") : tables[i].parentNode.className += " table-div";
+                }
                 tables[i].classList ? tables[i].classList.add("table") : tables[i].className += " table";
                 tables[i].classList ? tables[i].classList.add("table-hover") : tables[i].className += " table-hover";
-                tables[i].style.border = "0px";
+                tables[i].border = "0px";
             }
             for (var i = 1; i <= jupyterprompts.length; i++) {
                 // jupyterprompts[i].classList ? jupyterprompts[i].classList.add("container") : jupyterprompts[i].className += " container";
@@ -85,6 +94,9 @@
                         out_code.classList ? out_code.classList.add("col-xs-11") : out_code.className += "col-xs-11";
                     }
                 }
+            }
+            for (var i = 0; i < jupytercharts.length; i++) {
+                jupytercharts[i].children[0].classList ? jupytercharts[i].children[0].classList.add("img-responsive") : jupytercharts[i].children[0].className += " img-responsive";
             }
         // });
     </script>
